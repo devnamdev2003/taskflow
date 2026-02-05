@@ -393,9 +393,9 @@
         };
 
         // State
-        let tasks = JSON.parse(localStorage.getItem('taskflow_v7_base')) || [];
-        let recurringTasks = JSON.parse(localStorage.getItem('taskflow_v7_recurring')) || [];
-        let completionsLog = JSON.parse(localStorage.getItem('taskflow_v7_completions')) || {};
+        let tasks = JSON.parse(localStorage.getItem('taskflow_base')) || [];
+        let recurringTasks = JSON.parse(localStorage.getItem('taskflow_recurring')) || [];
+        let completionsLog = JSON.parse(localStorage.getItem('taskflow_completions')) || {};
 
         let viewingDate = new Date();
         viewingDate.setHours(0, 0, 0, 0);
@@ -570,7 +570,7 @@
                         monthly: isMonthlyMode
                     });
                 }
-                localStorage.setItem('taskflow_v7_recurring', JSON.stringify(recurringTasks));
+                localStorage.setItem('taskflow_recurring', JSON.stringify(recurringTasks));
                 if (activeView === 'settings') renderRecurringInSettings();
             } else {
                 if (editingId) {
@@ -584,7 +584,7 @@
                         targetDate: formatDate(viewingDate)
                     });
                 }
-                localStorage.setItem('taskflow_v7_base', JSON.stringify(tasks));
+                localStorage.setItem('taskflow_base', JSON.stringify(tasks));
             }
 
             toggleModal(false);
@@ -631,11 +631,11 @@
                 const index = completionsLog[id].indexOf(dateKey);
                 if (index > -1) completionsLog[id].splice(index, 1);
                 else completionsLog[id].push(dateKey);
-                localStorage.setItem('taskflow_v7_completions', JSON.stringify(completionsLog));
+                localStorage.setItem('taskflow_completions', JSON.stringify(completionsLog));
             } else {
                 // Use loose equality to handle string/number mismatch from HTML call
                 tasks = tasks.map(t => t.id == id ? { ...t, completed: !t.completed } : t);
-                localStorage.setItem('taskflow_v7_base', JSON.stringify(tasks));
+                localStorage.setItem('taskflow_base', JSON.stringify(tasks));
             }
             renderTasks();
             if (activeView === 'dashboard') renderDashboard();
@@ -650,12 +650,12 @@
                 if (isRecurring) {
                     recurringTasks = recurringTasks.filter(t => t.id != id);
                     delete completionsLog[id];
-                    localStorage.setItem('taskflow_v7_recurring', JSON.stringify(recurringTasks));
-                    localStorage.setItem('taskflow_v7_completions', JSON.stringify(completionsLog));
+                    localStorage.setItem('taskflow_recurring', JSON.stringify(recurringTasks));
+                    localStorage.setItem('taskflow_completions', JSON.stringify(completionsLog));
                     if (activeView === 'settings') renderRecurringInSettings();
                 } else {
                     tasks = tasks.filter(t => t.id != id);
-                    localStorage.setItem('taskflow_v7_base', JSON.stringify(tasks));
+                    localStorage.setItem('taskflow_base', JSON.stringify(tasks));
                 }
                 renderTasks();
                 if (activeView === 'dashboard') renderDashboard();
